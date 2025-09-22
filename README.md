@@ -2,10 +2,43 @@
 
 Query devtools version, pages.
 
+### Usage
+
+#### DQ package
+
+```sh
+go get github.com/J-Siu/go-dtquery/dq
+```
+
+```go
+import "github.com/J-Siu/go-dtquery/dq"
+```
+
+See [root.go](/cmd/root.go) for code sample.
+
+#### Command Line Demo
+
+1. Close running Chrome. Start Chrome with following option:
+
+    ```sh
+    chrome --remote-debugging-port=9222
+    ```
+
+    Or Chromium with the same option.
+
+2. Run
+
+    ```sh
+    go run main.go [-r <hostname/ip>] [-p <port>]
+    ```
+
 ### Change Log
 
 - v0.0.1
   - Initial commit
+- v0.0.2
+  - Add command line demo
+  - Update README
 
 ### License
 
