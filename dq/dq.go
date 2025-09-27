@@ -33,7 +33,7 @@ import (
 	"time"
 
 	"github.com/J-Siu/go-basestruct"
-	"github.com/J-Siu/go-ezlog"
+	"github.com/J-Siu/go-ezlog/v2"
 )
 
 func Get(host string, port int) *DevTools {
@@ -48,10 +48,9 @@ func Get(host string, port int) *DevTools {
 
 	d.getVer().getPages()
 	if d.Err != nil {
-		ezlog.Err(d.Err.Error())
+		ezlog.Err().Msg(d.Err).Out()
 	}
-	ezlog.Debug(prefix + ": Pages:")
-	ezlog.DebugP(MustToJsonStrP(d.Pages))
+	ezlog.Debug().Name(prefix).NameLn("Pages").Msg(d.Pages).Out()
 	return d
 }
 
@@ -93,23 +92,22 @@ func (d *DevTools) getVer() *DevTools {
 
 func (d *DevTools) getTabs() *DevTools {
 	prefix := d.MyType + ".getTabs"
-	ezlog.Trace(prefix + ": Start")
 
+	ezlog.Trace().Name(prefix).Msg("Start").Out()
 	if d.CheckErrInit(prefix) {
 		urlTab, _ := url.JoinPath("http://", d.Url, "json")
 		d.Err = HttpGetJson(urlTab, &d.Tabs, 2)
-		ezlog.Debug(prefix)
-		ezlog.DebugP(MustToJsonStrP(d.Tabs))
+		ezlog.Debug().NameLn(prefix).Msg(d.Tabs).Out()
 	}
 
-	ezlog.Trace(prefix + ": End")
+	ezlog.Trace().Name(prefix).Msg("End").Out()
 	return d
 }
 
 // Filter page type from d.Tabs into d.Pages
 func (d *DevTools) getPages() *DevTools {
 	prefix := d.MyType + ".getPages"
-	ezlog.Trace(prefix + ": Start")
+	ezlog.Trace().Name(prefix).Msg("Start").Out()
 
 	if d.CheckErrInit(prefix) {
 		d.getTabs()
@@ -122,11 +120,10 @@ func (d *DevTools) getPages() *DevTools {
 				}
 			}
 		}
-		ezlog.Debug(prefix)
-		ezlog.DebugP(MustToJsonStrP(d.Pages))
+		ezlog.Trace().NameLn(prefix).Msg(d.Pages).Out()
 	}
 
-	ezlog.Trace(prefix + ": End")
+	ezlog.Trace().Name(prefix).Msg("End").Out()
 	return d
 }
 
@@ -151,21 +148,6 @@ func HttpGetJson[T any](urlStr string, jsonObjP *T, timeout int) (err error) {
 		err = json.Unmarshal(body, jsonObjP)
 	}
 
-	ezlog.Trace(prefix)
-	ezlog.TraceP(MustToJsonStrP(jsonObjP))
-
+	ezlog.Trace().NameLn(prefix).Msg(jsonObjP).Out()
 	return err
-}
-
-func MustToJsonStrP(obj any) *string {
-	prefix := "MustToJsonStrP"
-	var str string
-	b, err := json.MarshalIndent(obj, "", "  ")
-	if err == nil {
-		str = string(b)
-	} else {
-		ezlog.Trace(prefix + ": Err: " + err.Error())
-		return nil
-	}
-	return &str
 }

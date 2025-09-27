@@ -26,7 +26,7 @@ import (
 	"os"
 
 	"github.com/J-Siu/go-dtquery/dq"
-	"github.com/J-Siu/go-ezlog"
+	"github.com/J-Siu/go-ezlog/v2"
 	"github.com/spf13/cobra"
 )
 
@@ -35,12 +35,12 @@ var rootCmd = &cobra.Command{
 	Use:   "go-dtquery",
 	Short: "Query Devtools version and page information",
 	Run: func(cmd *cobra.Command, args []string) {
-		// Setup log functions
-		ezlog.SetAllPrintln()
+		ezlog.StrAny.IndentEnable(true)
 		// Setup log level
 		debug, _ := cmd.Flags().GetBool("debug")
 		if debug {
 			ezlog.SetLogLevel(ezlog.DebugLevel)
+			// ezlog.SetLogLevel(ezlog.TraceLevel)
 		}
 
 		host, _ := cmd.Flags().GetString("host")
@@ -49,7 +49,7 @@ var rootCmd = &cobra.Command{
 		devtools := dq.Get(host, port)
 
 		// Print out devtools
-		ezlog.MsgP(dq.MustToJsonStrP(devtools))
+		ezlog.Log().Msg(devtools).Out()
 	},
 }
 

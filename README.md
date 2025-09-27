@@ -39,6 +39,8 @@ See [root.go](/cmd/root.go) for code sample.
 - v0.0.2
   - Add command line demo
   - Update README
+- v0.0.3
+  - Update `ezlog`
 
 ### License
 

@@ -1,7 +1,9 @@
 github.com/J-Siu/go-basestruct v1.0.0 h1:Ge0PuVnkhbsEDDYkX7GI3ccL3ahrOnQsv4RXNBl2Q7M=
 github.com/J-Siu/go-basestruct v1.0.0/go.mod h1:HDYO0KpE3MRbTFv4QvAS47USj+s1b2kftvPWq2hVJtA=
-github.com/J-Siu/go-ezlog v1.0.0 h1:E+9miVqZBHQs72hLda5I15TXOYwGdgmrsnm3wTAQxTk=
-github.com/J-Siu/go-ezlog v1.0.0/go.mod h1:l7IC00AuV5GeIgtrFyZhLTJjbaRBphV6sa9xPMwCZjU=
+github.com/J-Siu/go-ezlog/v2 v2.1.2 h1:i5EDE//o7y0lzMKuudPctjQQz+aPJ66nJN/aYUN4zLE=
+github.com/J-Siu/go-ezlog/v2 v2.1.2/go.mod h1:lHk52GUbR9icnpM4TFIo39Vqt+7P8VF7hg5MNzZ+pnI=
+github.com/J-Siu/go-strany v1.0.0 h1:iF9RCnNqWky690eqrpjIA+TsRzR60FKZwxBuQmaJiRE=
+github.com/J-Siu/go-strany v1.0.0/go.mod h1:Yk/0OvltUlhYPOvfiM2twmvNFHtEVhkSu/Aw8IjtW5Q=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
