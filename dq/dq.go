@@ -33,7 +33,7 @@ import (
 	"time"
 
 	"github.com/J-Siu/go-basestruct"
-	"github.com/J-Siu/go-ezlog/v2"
+	"github.com/J-Siu/go-helper/v2/ezlog"
 )
 
 func Get(host string, port int) *DevTools {

@@ -26,7 +26,7 @@ import (
 	"os"
 
 	"github.com/J-Siu/go-dtquery/dq"
-	"github.com/J-Siu/go-ezlog/v2"
+	"github.com/J-Siu/go-helper/v2/ezlog"
 	"github.com/spf13/cobra"
 )
 
@@ -35,7 +35,6 @@ var rootCmd = &cobra.Command{
 	Use:   "go-dtquery",
 	Short: "Query Devtools version and page information",
 	Run: func(cmd *cobra.Command, args []string) {
-		ezlog.StrAny.IndentEnable(true)
 		// Setup log level
 		debug, _ := cmd.Flags().GetBool("debug")
 		if debug {
