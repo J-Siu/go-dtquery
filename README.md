@@ -43,6 +43,8 @@ See [root.go](/cmd/root.go) for code sample.
   - Update `ezlog`
 - v0.0.4
   - Update to `go-helper/v2`
+- v0.0.5
+  - Update to `go-helper/v2`
 
 ### License
 

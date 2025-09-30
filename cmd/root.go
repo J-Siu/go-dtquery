@@ -32,8 +32,9 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "go-dtquery",
-	Short: "Query Devtools version and page information",
+	Use:     "go-dtquery",
+	Version: "v0.0.5",
+	Short:   "Query Devtools version and page information",
 	Run: func(cmd *cobra.Command, args []string) {
 		// Setup log level
 		debug, _ := cmd.Flags().GetBool("debug")
@@ -48,7 +49,7 @@ var rootCmd = &cobra.Command{
 		devtools := dq.Get(host, port)
 
 		// Print out devtools
-		ezlog.Log().Msg(devtools).Out()
+		ezlog.Log().M(devtools).Out()
 	},
 }
 
