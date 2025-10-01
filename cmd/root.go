@@ -39,8 +39,8 @@ var rootCmd = &cobra.Command{
 		// Setup log level
 		debug, _ := cmd.Flags().GetBool("debug")
 		if debug {
-			ezlog.SetLogLevel(ezlog.DebugLevel)
-			// ezlog.SetLogLevel(ezlog.TraceLevel)
+			ezlog.SetLogLevel(ezlog.DEBUG)
+			// ezlog.SetLogLevel(ezlog.TRACE)
 		}
 
 		host, _ := cmd.Flags().GetString("host")
