@@ -32,7 +32,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/J-Siu/go-basestruct"
+	"github.com/J-Siu/go-helper/v2/basestruct"
 	"github.com/J-Siu/go-helper/v2/ezlog"
 )
 

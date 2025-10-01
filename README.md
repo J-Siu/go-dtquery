@@ -44,7 +44,9 @@ See [root.go](/cmd/root.go) for code sample.
 - v0.0.4
   - Update to `go-helper/v2`
 - v0.0.5
-  - Update to `go-helper/v2`
+  - Update `go-helper/v2`
+- v0.0.6
+  - Update `go-helper/v2`
 
 ### License
 
