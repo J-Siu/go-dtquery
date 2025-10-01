@@ -3,7 +3,7 @@ module github.com/J-Siu/go-dtquery
 go 1.25.1
 
 require (
-	github.com/J-Siu/go-helper/v2 v2.4.0
+	github.com/J-Siu/go-helper/v2 v2.4.1
 	github.com/spf13/cobra v1.10.1
 )
 

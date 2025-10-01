@@ -47,6 +47,10 @@ See [root.go](/cmd/root.go) for code sample.
   - Update `go-helper/v2`
 - v0.0.6
   - Update `go-helper/v2`
+- v0.0.7
+  - dq
+    - expose GetTabs(), GetVer(), New() for DevTools struct
+    - add package level New() for DevTools
 
 ### License
 

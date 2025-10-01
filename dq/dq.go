@@ -36,24 +36,6 @@ import (
 	"github.com/J-Siu/go-helper/v2/ezlog"
 )
 
-func Get(host string, port int) *DevTools {
-	d := new(DevTools)
-	d.MyType = "DevtoolsInfo"
-	prefix := "dq.Get"
-	d.Initialized = true
-
-	d.Host = host
-	d.Port = port
-	d.Url = net.JoinHostPort(d.Host, strconv.Itoa(d.Port))
-
-	d.getVer().getPages()
-	if d.Err != nil {
-		ezlog.Err().M(d.Err).Out()
-	}
-	ezlog.Debug().N(prefix).Nn("Pages").M(d.Pages).Out()
-	return d
-}
-
 type DevtoolsInfo struct {
 	Browser     string `json:"Browser,omitempty"`
 	ProtocolVer string `json:"Protocol-Version,omitempty"`
@@ -70,7 +52,7 @@ type DevtoolsInfo struct {
 
 // DevTools ws/url info
 type DevTools struct {
-	basestruct.Base
+	*basestruct.Base
 
 	Host string `json:"host,omitempty"`
 	Port int    `json:"port,omitempty"`
@@ -81,22 +63,31 @@ type DevTools struct {
 	Ver   DevtoolsInfo   `json:"ver,omitempty"`   // From http://[Host]:[Port]/json/version
 }
 
-func (d *DevTools) getVer() *DevTools {
+// Get json info from http://<host>:<port/json/version
+//
+// Populate `Ver`
+func (d *DevTools) GetVer() *DevTools {
 	prefix := d.MyType + ".getVer"
 	if d.CheckErrInit(prefix) {
 		urlVer, _ := url.JoinPath("http://", d.Url, "json", "version")
-		d.Err = HttpGetJson(urlVer, &d.Ver, 2)
+		d.Err = httpGetJson(urlVer, &d.Ver, 2)
 	}
 	return d
 }
 
-func (d *DevTools) getTabs() *DevTools {
+// Get json info from http://<host>:<port/json
+//
+// Populate both `Tabs` and `Pages`
+func (d *DevTools) GetTabs() *DevTools {
 	prefix := d.MyType + ".getTabs"
 
 	ezlog.Trace().N(prefix).TxtStart().Out()
 	if d.CheckErrInit(prefix) {
 		urlTab, _ := url.JoinPath("http://", d.Url, "json")
-		d.Err = HttpGetJson(urlTab, &d.Tabs, 2)
+		d.Err = httpGetJson(urlTab, &d.Tabs, 2)
+		if d.Err == nil {
+			d.getPages()
+		}
 		ezlog.Debug().Nn(prefix).M(d.Tabs).Out()
 	}
 
@@ -110,7 +101,7 @@ func (d *DevTools) getPages() *DevTools {
 	ezlog.Trace().N(prefix).TxtStart().Out()
 
 	if d.CheckErrInit(prefix) {
-		d.getTabs()
+		d.GetTabs()
 		if d.Err == nil {
 			// Only Keep "Page"
 			d.Pages = []DevtoolsInfo{}
@@ -127,7 +118,7 @@ func (d *DevTools) getPages() *DevTools {
 	return d
 }
 
-func HttpGetJson[T any](urlStr string, jsonObjP *T, timeout int) (err error) {
+func httpGetJson[T any](urlStr string, jsonObjP *T, timeout int) (err error) {
 	prefix := "httpGetJson"
 
 	var body []byte
@@ -150,4 +141,29 @@ func HttpGetJson[T any](urlStr string, jsonObjP *T, timeout int) (err error) {
 
 	ezlog.Trace().Nn(prefix).M(jsonObjP).Out()
 	return err
+}
+
+func (t *DevTools) New(host string, port int) *DevTools {
+	t.Base = new(basestruct.Base)
+	t.MyType = "Devtools"
+	t.Host = host
+	t.Port = port
+	t.Url = net.JoinHostPort(t.Host, strconv.Itoa(t.Port))
+	t.Initialized = true
+	return t
+}
+
+func New(host string, port int) *DevTools {
+	return new(DevTools).New(host, port)
+}
+
+// Return a DevTools object with `Ver`, `Tabs` and `Pages` populated
+func Get(host string, port int) *DevTools {
+	prefix := "dq.Get"
+	d := New(host, port).GetVer().GetTabs()
+	if d.Err != nil {
+		ezlog.Err().M(d.Err).Out()
+	}
+	ezlog.Debug().N(prefix).Nn("Pages").M(d.Pages).Out()
+	return d
 }
