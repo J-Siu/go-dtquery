@@ -36,20 +36,6 @@ import (
 	"github.com/J-Siu/go-helper/v2/ezlog"
 )
 
-type DevtoolsInfo struct {
-	Browser     string `json:"Browser,omitempty"`
-	ProtocolVer string `json:"Protocol-Version,omitempty"`
-	UserAgent   string `json:"User-Agent,omitempty"`
-	V8Ver       string `json:"V8-Version,omitempty"`
-	WebKitVer   string `json:"WebKit-Version,omitempty"`
-	WsUrl       string `json:"webSocketDebuggerUrl,omitempty"`
-
-	Description string `json:"description,omitempty"`
-	Title       string `json:"title,omitempty"`
-	Type        string `json:"type,omitempty"`
-	Url         string `json:"url,omitempty"`
-}
-
 // DevTools ws/url info
 type DevTools struct {
 	*basestruct.Base
@@ -61,6 +47,16 @@ type DevTools struct {
 	Pages []DevtoolsInfo `json:"pages,omitempty"` // Tabs with Page type only
 	Tabs  []DevtoolsInfo `json:"tabs,omitempty"`  // From http://[Host]:[Port]/json
 	Ver   DevtoolsInfo   `json:"ver,omitempty"`   // From http://[Host]:[Port]/json/version
+}
+
+func (t *DevTools) New(host string, port int) *DevTools {
+	t.Base = new(basestruct.Base)
+	t.MyType = "Devtools"
+	t.Host = host
+	t.Port = port
+	t.Url = net.JoinHostPort(t.Host, strconv.Itoa(t.Port))
+	t.Initialized = true
+	return t
 }
 
 // Get json info from http://<host>:<port/json/version
@@ -141,29 +137,4 @@ func httpGetJson[T any](urlStr string, jsonObjP *T, timeout int) (err error) {
 
 	ezlog.Trace().Nn(prefix).M(jsonObjP).Out()
 	return err
-}
-
-func (t *DevTools) New(host string, port int) *DevTools {
-	t.Base = new(basestruct.Base)
-	t.MyType = "Devtools"
-	t.Host = host
-	t.Port = port
-	t.Url = net.JoinHostPort(t.Host, strconv.Itoa(t.Port))
-	t.Initialized = true
-	return t
-}
-
-func New(host string, port int) *DevTools {
-	return new(DevTools).New(host, port)
-}
-
-// Return a DevTools object with `Ver`, `Tabs` and `Pages` populated
-func Get(host string, port int) *DevTools {
-	prefix := "dq.Get"
-	d := New(host, port).GetVer().GetTabs()
-	if d.Err != nil {
-		ezlog.Err().M(d.Err).Out()
-	}
-	ezlog.Debug().N(prefix).Nn("Pages").M(d.Pages).Out()
-	return d
 }
