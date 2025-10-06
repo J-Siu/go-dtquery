@@ -26,6 +26,7 @@ import (
 	"os"
 
 	"github.com/J-Siu/go-dtquery/dq"
+	"github.com/J-Siu/go-helper/v2/errs"
 	"github.com/J-Siu/go-helper/v2/ezlog"
 	"github.com/spf13/cobra"
 )
@@ -33,23 +34,32 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:     "go-dtquery",
-	Version: "v0.0.5",
+	Version: dq.Version,
 	Short:   "Query Devtools version and page information",
-	Run: func(cmd *cobra.Command, args []string) {
-		// Setup log level
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		debug, _ := cmd.Flags().GetBool("debug")
 		if debug {
 			ezlog.SetLogLevel(ezlog.DEBUG)
-			// ezlog.SetLogLevel(ezlog.TRACE)
 		}
-
+		ezlog.Debug().N("Version").Mn(dq.Version).Out()
+	},
+	Run: func(cmd *cobra.Command, args []string) {
 		host, _ := cmd.Flags().GetString("host")
 		port, _ := cmd.Flags().GetInt("port")
 		// dq.Get return a populated Devtools struct
 		devtools := dq.Get(host, port)
-
+		errs.Queue("", devtools.Err)
 		// Print out devtools
-		ezlog.Log().M(devtools).Out()
+		if errs.IsEmpty() {
+			ezlog.Log().Nn("devtools").M(devtools).Out()
+		}
+	},
+	PersistentPostRun: func(cmd *cobra.Command, args []string) {
+		if errs.NotEmpty() {
+			ezlog.Err().Ln().M(errs.Errs).Out()
+			cmd.Usage()
+			os.Exit(1)
+		}
 	},
 }
 
