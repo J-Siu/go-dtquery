@@ -62,56 +62,55 @@ func (t *DevTools) New(host string, port int) *DevTools {
 // Get json info from http://<host>:<port/json/version
 //
 // Populate `Ver`
-func (d *DevTools) GetVer() *DevTools {
-	prefix := d.MyType + ".getVer"
-	if d.CheckErrInit(prefix) {
-		urlVer, _ := url.JoinPath("http://", d.Url, "json", "version")
-		d.Err = httpGetJson(urlVer, &d.Ver, 2)
+func (t *DevTools) GetVer() *DevTools {
+	prefix := t.MyType + ".getVer"
+	if t.CheckErrInit(prefix) {
+		urlVer, _ := url.JoinPath("http://", t.Url, "json", "version")
+		t.Err = httpGetJson(urlVer, &t.Ver, 2)
 	}
-	return d
+	return t
 }
 
 // Get json info from http://<host>:<port/json
 //
 // Populate both `Tabs` and `Pages`
-func (d *DevTools) GetTabs() *DevTools {
-	prefix := d.MyType + ".getTabs"
+func (t *DevTools) GetTabs() *DevTools {
+	prefix := t.MyType + ".getTabs"
 
 	ezlog.Trace().N(prefix).TxtStart().Out()
-	if d.CheckErrInit(prefix) {
-		urlTab, _ := url.JoinPath("http://", d.Url, "json")
-		d.Err = httpGetJson(urlTab, &d.Tabs, 2)
-		if d.Err == nil {
-			d.getPages()
+	if t.CheckErrInit(prefix) {
+		urlTab, _ := url.JoinPath("http://", t.Url, "json")
+		t.Err = httpGetJson(urlTab, &t.Tabs, 2)
+		if t.Err == nil {
+			t.getPages()
 		}
-		ezlog.Debug().Nn(prefix).M(d.Tabs).Out()
+		ezlog.Debug().Nn(prefix).M(t.Tabs).Out()
 	}
 
 	ezlog.Trace().N(prefix).TxtEnd().Out()
-	return d
+	return t
 }
 
 // Filter page type from d.Tabs into d.Pages
-func (d *DevTools) getPages() *DevTools {
-	prefix := d.MyType + ".getPages"
+func (t *DevTools) getPages() *DevTools {
+	prefix := t.MyType + ".getPages"
 	ezlog.Trace().N(prefix).TxtStart().Out()
 
-	if d.CheckErrInit(prefix) {
-		d.GetTabs()
-		if d.Err == nil {
+	if t.CheckErrInit(prefix) {
+		if t.Err == nil {
 			// Only Keep "Page"
-			d.Pages = []DevtoolsInfo{}
-			for _, tab := range d.Tabs {
+			t.Pages = []DevtoolsInfo{}
+			for _, tab := range t.Tabs {
 				if tab.Type == "page" {
-					d.Pages = append(d.Pages, tab)
+					t.Pages = append(t.Pages, tab)
 				}
 			}
 		}
-		ezlog.Trace().Nn(prefix).M(d.Pages).Out()
+		ezlog.Trace().Nn(prefix).M(t.Pages).Out()
 	}
 
 	ezlog.Trace().N(prefix).TxtEnd().Out()
-	return d
+	return t
 }
 
 func httpGetJson[T any](urlStr string, jsonObjP *T, timeout int) (err error) {
