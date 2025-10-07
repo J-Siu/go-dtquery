@@ -41,6 +41,10 @@ var rootCmd = &cobra.Command{
 		if debug {
 			ezlog.SetLogLevel(ezlog.DEBUG)
 		}
+		trace, _ := cmd.Flags().GetBool("trace")
+		if trace {
+			ezlog.SetLogLevel(ezlog.TRACE)
+		}
 		ezlog.Debug().N("Version").Mn(dq.Version).Out()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
@@ -74,4 +78,5 @@ func init() {
 	rootCmd.PersistentFlags().StringP("host", "r", "localhost", "Hostname or IP")
 	rootCmd.PersistentFlags().IntP("port", "p", 9222, "Port")
 	rootCmd.PersistentFlags().BoolP("debug", "d", false, "Debug mode")
+	rootCmd.PersistentFlags().BoolP("trace", "t", false, "Debug mode")
 }

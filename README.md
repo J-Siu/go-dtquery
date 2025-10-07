@@ -53,6 +53,11 @@ See [root.go](/cmd/root.go) for code sample.
     - add package level New() for DevTools
 - v0.0.8
   - Update `go-helper/v2`
+- v0.0.9
+  - Fix debug output for both cli and dq
+- v0.0.10
+  - Add trace
+  - Fix getPages, GetTabs infinite loop
 
 ### License
 
