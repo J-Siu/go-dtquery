@@ -40,13 +40,13 @@ import (
 type DevTools struct {
 	*basestruct.Base
 
-	Host string `json:"host,omitempty"`
-	Port int    `json:"port,omitempty"`
-	Url  string `json:"url,omitempty"`
+	Host string `json:"Host"`
+	Port int    `json:"Port"`
+	Url  string `json:"Url"`
 
-	Pages []DevtoolsInfo `json:"pages,omitempty"` // Tabs with Page type only
-	Tabs  []DevtoolsInfo `json:"tabs,omitempty"`  // From http://[Host]:[Port]/json
-	Ver   DevtoolsInfo   `json:"ver,omitempty"`   // From http://[Host]:[Port]/json/version
+	Pages []DevtoolsInfo `json:"Pages"` // Tabs with Page type only
+	Tabs  []DevtoolsInfo `json:"Tabs"`  // From http://[Host]:[Port]/json
+	Ver   DevtoolsInfo   `json:"Ver"`   // From http://[Host]:[Port]/json/version
 }
 
 func (t *DevTools) New(host string, port int) *DevTools {
@@ -61,7 +61,7 @@ func (t *DevTools) New(host string, port int) *DevTools {
 
 // Get json info from http://<host>:<port/json/version
 //
-// Populate `Ver`
+// Populate
 func (t *DevTools) GetVer() *DevTools {
 	prefix := t.MyType + ".getVer"
 	if t.CheckErrInit(prefix) {
@@ -73,7 +73,7 @@ func (t *DevTools) GetVer() *DevTools {
 
 // Get json info from http://<host>:<port/json
 //
-// Populate both `Tabs` and `Pages`
+// Populate both
 func (t *DevTools) GetTabs() *DevTools {
 	prefix := t.MyType + ".getTabs"
 

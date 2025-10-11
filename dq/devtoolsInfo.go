@@ -25,14 +25,14 @@ package dq
 
 type DevtoolsInfo struct {
 	Browser     string `json:"Browser,omitempty"`
-	ProtocolVer string `json:"Protocol-Version,omitempty"`
-	UserAgent   string `json:"User-Agent,omitempty"`
-	V8Ver       string `json:"V8-Version,omitempty"`
-	WebKitVer   string `json:"WebKit-Version,omitempty"`
-	WsUrl       string `json:"webSocketDebuggerUrl,omitempty"`
+	ProtocolVer string `json:"ProtocolVer,omitempty"`
+	UserAgent   string `json:"UserAgent,omitempty"`
+	V8Ver       string `json:"V8Ver,omitempty"`
+	WebKitVer   string `json:"WebKitVer,omitempty"`
+	WsUrl       string `json:"WsUrl,omitempty"`
 
-	Description string `json:"description,omitempty"`
-	Title       string `json:"title,omitempty"`
-	Type        string `json:"type,omitempty"`
-	Url         string `json:"url,omitempty"`
+	Description string `json:"Description,omitempty"`
+	Title       string `json:"Title,omitempty"`
+	Type        string `json:"Type,omitempty"`
+	Url         string `json:"Url,omitempty"`
 }

@@ -2,6 +2,13 @@
 
 Query devtools version, pages.
 
+- [Usage](#usage)
+  - [DQ package](#dq-package)
+  - [Command Line Demo](#command-line-demo)
+- [Change Log](#change-log)
+- [License](#license)
+
+<!--more-->
 ### Usage
 
 #### DQ package
@@ -58,6 +65,9 @@ See [root.go](/cmd/root.go) for code sample.
 - v0.0.10
   - Add trace
   - Fix getPages, GetTabs infinite loop
+- v1.0.0
+  - Update json tags
+  - Update `go-helper/v2`
 
 ### License
 
