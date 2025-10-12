@@ -2,6 +2,7 @@
 
 Query devtools version, pages.
 
+- [Install](#install)
 - [Usage](#usage)
   - [DQ package](#dq-package)
   - [Command Line Demo](#command-line-demo)
@@ -9,6 +10,19 @@ Query devtools version, pages.
 - [License](#license)
 
 <!--more-->
+
+### Install
+
+Go install
+
+```sh
+go install github.com/J-Siu/go-dtquery@latest
+```
+
+Download
+
+- https://github.com/J-Siu/go-dtquery/releases
+
 ### Usage
 
 #### DQ package
@@ -68,6 +82,8 @@ See [root.go](/cmd/root.go) for code sample.
 - v1.0.0
   - Update json tags
   - Update `go-helper/v2`
+- v1.1.0
+  - Add Github actions
 
 ### License
 
