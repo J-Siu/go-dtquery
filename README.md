@@ -53,38 +53,6 @@ See [root.go](/cmd/root.go) for code sample.
     go run main.go [-r <hostname/ip>] [-p <port>]
     ```
 
-### Change Log
-
-- v0.0.1
-  - Initial commit
-- v0.0.2
-  - Add command line demo
-  - Update README
-- v0.0.3
-  - Update `ezlog`
-- v0.0.4
-  - Update to `go-helper/v2`
-- v0.0.5
-  - Update `go-helper/v2`
-- v0.0.6
-  - Update `go-helper/v2`
-- v0.0.7
-  - dq
-    - expose GetTabs(), GetVer(), New() for DevTools struct
-    - add package level New() for DevTools
-- v0.0.8
-  - Update `go-helper/v2`
-- v0.0.9
-  - Fix debug output for both cli and dq
-- v0.0.10
-  - Add trace
-  - Fix getPages, GetTabs infinite loop
-- v1.0.0
-  - Update json tags
-  - Update `go-helper/v2`
-- v1.1.0
-  - Add Github actions
-
 ### License
 
 The MIT License (MIT)
