@@ -5,8 +5,8 @@ Query devtools version, pages.
 - [Install](#install)
 - [Usage](#usage)
   - [DQ package](#dq-package)
+  - [DT\_Url](#dt_url)
   - [Command Line Demo](#command-line-demo)
-- [Change Log](#change-log)
 - [License](#license)
 
 <!--more-->
@@ -36,6 +36,21 @@ import "github.com/J-Siu/go-dtquery/dq"
 ```
 
 See [root.go](/cmd/root.go) for code sample.
+
+#### DT_Url
+
+As Chrome/Chromium name(key) of the devtool url in http//localhost:9222/json/version may change overtime, starting dq v1.2.0, AFTER calling `dq.Get(host, port)`, the devtool url can be access directly with `dq.DT_Url`:
+
+```go
+devtools := dq.Get(host, port)
+devtool_url := dq.DT_Url()
+# # or
+# devtool_url := devtools.DT_Url
+```
+
+Current support devtools url json name:
+- WsUrl (Chrome < 140)
+- WebSocketDebuggerUrl (Chrome >= 140)
 
 #### Command Line Demo
 

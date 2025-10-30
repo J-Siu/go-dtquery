@@ -27,3 +27,8 @@
   - Update `go-helper/v2`
 - v1.1.0
   - Add Github actions
+- v1.2.0
+  - add DevTools.DT_Url
+  - add dq.DT_Url()
+  - remove dq.New()
+  - support 'WebSocketDebuggerUrl'

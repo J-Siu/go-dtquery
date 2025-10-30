@@ -27,16 +27,21 @@ import (
 	"github.com/J-Siu/go-helper/v2/ezlog"
 )
 
-func New(host string, port int) *DevTools {
-	return new(DevTools).New(host, port)
-}
+var (
+	devTools = new(DevTools)
+)
 
 // Return a DevTools object with `Ver`, `Tabs` and `Pages` populated
 func Get(host string, port int) *DevTools {
 	prefix := "dq.Get"
-	d := New(host, port).GetVer().GetTabs()
+	d := devTools.New(host, port).GetVer().GetTabs()
 	if d.Err == nil {
 		ezlog.Debug().N(prefix).Nn("Pages").M(d).Out()
 	}
 	return d
+}
+
+// This should be called after `Get`
+func DT_Url() (dt_url string) {
+	return devTools.DT_Url
 }

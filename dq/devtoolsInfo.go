@@ -24,12 +24,13 @@ THE SOFTWARE.
 package dq
 
 type DevtoolsInfo struct {
-	Browser     string `json:"Browser,omitempty"`
-	ProtocolVer string `json:"ProtocolVer,omitempty"`
-	UserAgent   string `json:"UserAgent,omitempty"`
-	V8Ver       string `json:"V8Ver,omitempty"`
-	WebKitVer   string `json:"WebKitVer,omitempty"`
-	WsUrl       string `json:"WsUrl,omitempty"`
+	Browser              string `json:"Browser,omitempty"`
+	ProtocolVer          string `json:"ProtocolVer,omitempty"`
+	UserAgent            string `json:"UserAgent,omitempty"`
+	V8Ver                string `json:"V8Ver,omitempty"`
+	WebKitVer            string `json:"WebKitVer,omitempty"`
+	WebSocketDebuggerUrl string `json:"WebSocketDebuggerUrl"` // Chrome >= 140
+	WsUrl                string `json:"WsUrl,omitempty"`      // Chrome < 140
 
 	Description string `json:"Description,omitempty"`
 	Title       string `json:"Title,omitempty"`

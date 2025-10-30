@@ -47,6 +47,8 @@ type DevTools struct {
 	Pages []DevtoolsInfo `json:"Pages"` // Tabs with Page type only
 	Tabs  []DevtoolsInfo `json:"Tabs"`  // From http://[Host]:[Port]/json
 	Ver   DevtoolsInfo   `json:"Ver"`   // From http://[Host]:[Port]/json/version
+
+	DT_Url string `json:"DT_Url"`
 }
 
 func (t *DevTools) New(host string, port int) *DevTools {
@@ -67,6 +69,14 @@ func (t *DevTools) GetVer() *DevTools {
 	if t.CheckErrInit(prefix) {
 		urlVer, _ := url.JoinPath("http://", t.Url, "json", "version")
 		t.Err = httpGetJson(urlVer, &t.Ver, 2)
+	}
+	if t.Err == nil {
+		if t.Ver.WsUrl != "" {
+			t.DT_Url = t.Ver.WsUrl
+		}
+		if t.Ver.WebSocketDebuggerUrl != "" {
+			t.DT_Url = t.Ver.WebSocketDebuggerUrl
+		}
 	}
 	return t
 }
