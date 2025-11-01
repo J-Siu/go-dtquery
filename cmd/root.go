@@ -45,7 +45,7 @@ var rootCmd = &cobra.Command{
 		if trace {
 			ezlog.SetLogLevel(ezlog.TRACE)
 		}
-		ezlog.Debug().N("Version").Mn(dq.Version).Out()
+		ezlog.Debug().N("Version").M(dq.Version).Out()
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		host, _ := cmd.Flags().GetString("host")
@@ -55,7 +55,7 @@ var rootCmd = &cobra.Command{
 		errs.Queue("", devtools.Err)
 		// Print out devtools
 		if errs.IsEmpty() {
-			ezlog.Log().Nn("devtools").M(devtools).Out()
+			ezlog.Log().N("devtools").Lm(devtools).Out()
 		}
 	},
 	PersistentPostRun: func(cmd *cobra.Command, args []string) {

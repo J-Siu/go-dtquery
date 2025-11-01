@@ -36,7 +36,7 @@ func Get(host string, port int) *DevTools {
 	prefix := "dq.Get"
 	d := devTools.New(host, port).GetVer().GetTabs()
 	if d.Err == nil {
-		ezlog.Debug().N(prefix).Nn("Pages").M(d).Out()
+		ezlog.Debug().N(prefix).N("Pages").Lm(d).Out()
 	}
 	return d
 }

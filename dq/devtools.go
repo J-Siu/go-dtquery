@@ -94,7 +94,7 @@ func (t *DevTools) GetTabs() *DevTools {
 		if t.Err == nil {
 			t.getPages()
 		}
-		ezlog.Debug().Nn(prefix).M(t.Tabs).Out()
+		ezlog.Debug().N(prefix).Lm(t.Tabs).Out()
 	}
 
 	ezlog.Trace().N(prefix).TxtEnd().Out()
@@ -116,7 +116,7 @@ func (t *DevTools) getPages() *DevTools {
 				}
 			}
 		}
-		ezlog.Trace().Nn(prefix).M(t.Pages).Out()
+		ezlog.Trace().N(prefix).Lm(t.Pages).Out()
 	}
 
 	ezlog.Trace().N(prefix).TxtEnd().Out()
@@ -144,6 +144,6 @@ func httpGetJson[T any](urlStr string, jsonObjP *T, timeout int) (err error) {
 		err = json.Unmarshal(body, jsonObjP)
 	}
 
-	ezlog.Trace().Nn(prefix).M(jsonObjP).Out()
+	ezlog.Trace().N(prefix).Lm(jsonObjP).Out()
 	return err
 }

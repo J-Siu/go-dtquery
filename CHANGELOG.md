@@ -32,3 +32,5 @@
   - add dq.DT_Url()
   - remove dq.New()
   - support 'WebSocketDebuggerUrl'
+- v1.2.1
+  - Update `go-helper/v2`
