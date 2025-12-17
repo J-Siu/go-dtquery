@@ -34,3 +34,5 @@
   - support 'WebSocketDebuggerUrl'
 - v1.2.1
   - Update `go-helper/v2`
+- v1.2.2
+  - Update `go-helper/v2`
