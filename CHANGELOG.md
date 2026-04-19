@@ -36,3 +36,6 @@
   - Update `go-helper/v2`
 - v1.2.2
   - Update `go-helper/v2`
+- v1.2.3
+  - Update `go-helper/v2`
+  - Update go version
