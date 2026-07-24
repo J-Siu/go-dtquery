@@ -25,20 +25,21 @@ package dq
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"net"
 	"net/http"
 	"net/url"
 	"strconv"
 	"time"
-
-	"github.com/J-Siu/go-helper/v2/basestruct"
-	"github.com/J-Siu/go-helper/v2/ezlog"
 )
 
 // DevTools ws/url info
 type DevTools struct {
-	*basestruct.Base
+	MyType      string
+	Initialized bool
+	Err         error
+	Debug       bool
 
 	Host string `json:"Host"`
 	Port int    `json:"Port"`
@@ -51,13 +52,13 @@ type DevTools struct {
 	DT_Url string `json:"DT_Url"`
 }
 
-func (t *DevTools) New(host string, port int) *DevTools {
-	t.Base = new(basestruct.Base)
-	t.MyType = "Devtools"
+func (t *DevTools) New(host string, port int, debug bool) *DevTools {
+	t.Debug = debug
 	t.Host = host
+	t.Initialized = true
+	t.MyType = "Devtools"
 	t.Port = port
 	t.Url = net.JoinHostPort(t.Host, strconv.Itoa(t.Port))
-	t.Initialized = true
 	return t
 }
 
@@ -68,7 +69,7 @@ func (t *DevTools) GetVer() *DevTools {
 	prefix := t.MyType + ".getVer"
 	if t.CheckErrInit(prefix) {
 		urlVer, _ := url.JoinPath("http://", t.Url, "json", "version")
-		t.Err = httpGetJson(urlVer, &t.Ver, 2)
+		t.Err = httpGetJson(urlVer, &t.Ver, 2, t.Debug)
 	}
 	if t.Err == nil {
 		if t.Ver.WsUrl != "" {
@@ -87,25 +88,23 @@ func (t *DevTools) GetVer() *DevTools {
 func (t *DevTools) GetTabs() *DevTools {
 	prefix := t.MyType + ".getTabs"
 
-	ezlog.Trace().N(prefix).TxtStart().Out()
+	DebugStart(t.Debug, prefix)
 	if t.CheckErrInit(prefix) {
 		urlTab, _ := url.JoinPath("http://", t.Url, "json")
-		t.Err = httpGetJson(urlTab, &t.Tabs, 2)
+		t.Err = httpGetJson(urlTab, &t.Tabs, 2, t.Debug)
 		if t.Err == nil {
 			t.getPages()
 		}
-		ezlog.Debug().N(prefix).Lm(t.Tabs).Out()
+		DebugStruct(t.Debug, prefix, t.Tabs)
 	}
-
-	ezlog.Trace().N(prefix).TxtEnd().Out()
+	DebugEnd(t.Debug, prefix)
 	return t
 }
 
 // Filter page type from d.Tabs into d.Pages
 func (t *DevTools) getPages() *DevTools {
 	prefix := t.MyType + ".getPages"
-	ezlog.Trace().N(prefix).TxtStart().Out()
-
+	DebugStart(t.Debug, prefix)
 	if t.CheckErrInit(prefix) {
 		if t.Err == nil {
 			// Only Keep "Page"
@@ -116,14 +115,13 @@ func (t *DevTools) getPages() *DevTools {
 				}
 			}
 		}
-		ezlog.Trace().N(prefix).Lm(t.Pages).Out()
+		DebugStruct(t.Debug, prefix, t.Pages)
 	}
-
-	ezlog.Trace().N(prefix).TxtEnd().Out()
+	DebugEnd(t.Debug, prefix)
 	return t
 }
 
-func httpGetJson[T any](urlStr string, jsonObjP *T, timeout int) (err error) {
+func httpGetJson[T any](urlStr string, jsonObjP *T, timeout int, debug bool) (err error) {
 	prefix := "httpGetJson"
 
 	var body []byte
@@ -143,7 +141,24 @@ func httpGetJson[T any](urlStr string, jsonObjP *T, timeout int) (err error) {
 		body, err = io.ReadAll(res.Body)
 		err = json.Unmarshal(body, jsonObjP)
 	}
-
-	ezlog.Trace().N(prefix).Lm(jsonObjP).Out()
+	DebugStruct(debug, prefix, jsonObjP)
 	return err
+}
+
+func (t *DevTools) CheckErrInit(prefix string) (pass bool) {
+	pass = true
+	// check error first
+	if t.Err != nil {
+		pass = false
+	} else if !t.Initialized {
+		errMsg := "not initialized"
+		if prefix != "" {
+			errMsg = prefix + ": " + errMsg
+		} else if t.MyType != "" {
+			errMsg = t.MyType + ": " + errMsg
+		}
+		t.Err = errors.New(errMsg)
+		pass = false
+	}
+	return pass
 }

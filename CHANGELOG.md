@@ -41,3 +41,6 @@
   - Update go version
 - v1.2.4
   - update go-helper/v2
+- v1.3.0
+  - dep: rm go-helper
+  - break: DevTools.New(string, int) -> DevTools.New(string, int, bool)

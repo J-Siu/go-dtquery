@@ -42,7 +42,7 @@ See [root.go](/cmd/root.go) for code sample.
 As Chrome/Chromium name(key) of the devtool url in http//localhost:9222/json/version may change overtime, starting dq v1.2.0, AFTER calling `dq.Get(host, port)`, the devtool url can be access directly with `dq.DT_Url`:
 
 ```go
-devtools := dq.Get(host, port)
+devtools := dq.Get(host, port, true)
 devtool_url := dq.DT_Url()
 # # or
 # devtool_url := devtools.DT_Url

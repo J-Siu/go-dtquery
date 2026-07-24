@@ -23,11 +23,10 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/J-Siu/go-dtquery/dq"
-	"github.com/J-Siu/go-helper/v2/errs"
-	"github.com/J-Siu/go-helper/v2/ezlog"
 	"github.com/spf13/cobra"
 )
 
@@ -39,31 +38,21 @@ var rootCmd = &cobra.Command{
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		debug, _ := cmd.Flags().GetBool("debug")
 		if debug {
-			ezlog.SetLogLevel(ezlog.DEBUG)
+			fmt.Println("Version:", dq.Version)
 		}
-		trace, _ := cmd.Flags().GetBool("trace")
-		if trace {
-			ezlog.SetLogLevel(ezlog.TRACE)
-		}
-		ezlog.Debug().N("Version").M(dq.Version).Out()
 	},
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) (err error) {
+		debug, _ := cmd.Flags().GetBool("debug")
 		host, _ := cmd.Flags().GetString("host")
 		port, _ := cmd.Flags().GetInt("port")
 		// dq.Get return a populated Devtools struct
-		devtools := dq.Get(host, port)
-		errs.Queue("", devtools.Err)
+		devtools := dq.Get(host, port, debug)
+		err = devtools.Err
 		// Print out devtools
-		if errs.IsEmpty() {
-			ezlog.Log().N("devtools").Lm(devtools).Out()
+		if err == nil {
+			dq.DebugStruct(true, "devtools", devtools)
 		}
-	},
-	PersistentPostRun: func(cmd *cobra.Command, args []string) {
-		if errs.NotEmpty() {
-			ezlog.Err().L().M(errs.Errs()).Out()
-			cmd.Usage()
-			os.Exit(1)
-		}
+		return err
 	},
 }
 
@@ -78,5 +67,4 @@ func init() {
 	rootCmd.PersistentFlags().StringP("host", "r", "localhost", "Hostname or IP")
 	rootCmd.PersistentFlags().IntP("port", "p", 9222, "Port")
 	rootCmd.PersistentFlags().BoolP("debug", "d", false, "Debug mode")
-	rootCmd.PersistentFlags().BoolP("trace", "t", false, "Debug mode")
 }

@@ -23,5 +23,5 @@ THE SOFTWARE.
 package dq
 
 const (
-	Version = "v1.2.4"
+	Version = "v1.3.0"
 )

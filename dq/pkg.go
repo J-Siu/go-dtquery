@@ -23,20 +23,16 @@ THE SOFTWARE.
 // dq - Devtools Query
 package dq
 
-import (
-	"github.com/J-Siu/go-helper/v2/ezlog"
-)
-
 var (
 	devTools = new(DevTools)
 )
 
 // Return a DevTools object with `Ver`, `Tabs` and `Pages` populated
-func Get(host string, port int) *DevTools {
+func Get(host string, port int, debug bool) *DevTools {
 	prefix := "dq.Get"
-	d := devTools.New(host, port).GetVer().GetTabs()
+	d := devTools.New(host, port, debug).GetVer().GetTabs()
 	if d.Err == nil {
-		ezlog.Debug().N(prefix).N("Pages").Lm(d).Out()
+		DebugStruct(debug, prefix+":Pages", d)
 	}
 	return d
 }
