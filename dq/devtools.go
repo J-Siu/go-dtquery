@@ -32,14 +32,15 @@ import (
 	"net/url"
 	"strconv"
 	"time"
+
+	"github.com/J-Siu/go-helper-mini/basestruct"
+	"github.com/J-Siu/go-helper-mini/ezlog"
+	"github.com/J-Siu/go-helper-mini/str"
 )
 
 // DevTools ws/url info
 type DevTools struct {
-	MyType      string
-	Initialized bool
-	Err         error
-	Debug       bool
+	basestruct.Embedded
 
 	Host string `json:"Host"`
 	Port int    `json:"Port"`
@@ -66,7 +67,7 @@ func (t *DevTools) New(host string, port int, debug bool) *DevTools {
 //
 // Populate
 func (t *DevTools) GetVer() *DevTools {
-	prefix := t.MyType + ".getVer"
+	prefix := t.MyType + ".GetVer"
 	if t.CheckErrInit(prefix) {
 		urlVer, _ := url.JoinPath("http://", t.Url, "json", "version")
 		t.Err = httpGetJson(urlVer, &t.Ver, 2, t.Debug)
@@ -86,25 +87,27 @@ func (t *DevTools) GetVer() *DevTools {
 //
 // Populate both
 func (t *DevTools) GetTabs() *DevTools {
-	prefix := t.MyType + ".getTabs"
+	prefix := t.MyType + ".GetTabs"
 
-	DebugStart(t.Debug, prefix)
+	ezlog.DebugStart(t.Debug, prefix)
 	if t.CheckErrInit(prefix) {
 		urlTab, _ := url.JoinPath("http://", t.Url, "json")
 		t.Err = httpGetJson(urlTab, &t.Tabs, 2, t.Debug)
 		if t.Err == nil {
 			t.getPages()
 		}
-		DebugStruct(t.Debug, prefix, t.Tabs)
+		if t.Debug {
+			ezlog.L.Println(prefix, str.Struct2String("Tabs", &t.Tabs))
+		}
 	}
-	DebugEnd(t.Debug, prefix)
+	ezlog.DebugEnd(t.Debug, prefix)
 	return t
 }
 
 // Filter page type from d.Tabs into d.Pages
 func (t *DevTools) getPages() *DevTools {
 	prefix := t.MyType + ".getPages"
-	DebugStart(t.Debug, prefix)
+	ezlog.DebugStart(t.Debug, prefix)
 	if t.CheckErrInit(prefix) {
 		if t.Err == nil {
 			// Only Keep "Page"
@@ -115,9 +118,11 @@ func (t *DevTools) getPages() *DevTools {
 				}
 			}
 		}
-		DebugStruct(t.Debug, prefix, t.Pages)
+		if t.Debug {
+			ezlog.L.Println(prefix, str.Struct2String("Pages", &t.Pages))
+		}
 	}
-	DebugEnd(t.Debug, prefix)
+	ezlog.DebugEnd(t.Debug, prefix)
 	return t
 }
 
@@ -141,7 +146,10 @@ func httpGetJson[T any](urlStr string, jsonObjP *T, timeout int, debug bool) (er
 		body, err = io.ReadAll(res.Body)
 		err = json.Unmarshal(body, jsonObjP)
 	}
-	DebugStruct(debug, prefix, jsonObjP)
+	if debug {
+		ezlog.L.Println(prefix, str.Struct2String("body", jsonObjP))
+	}
+
 	return err
 }
 

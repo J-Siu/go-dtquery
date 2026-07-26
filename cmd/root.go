@@ -23,10 +23,11 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/J-Siu/go-dtquery/dq"
+	"github.com/J-Siu/go-helper-mini/ezlog"
+	"github.com/J-Siu/go-helper-mini/str"
 	"github.com/spf13/cobra"
 )
 
@@ -38,7 +39,7 @@ var rootCmd = &cobra.Command{
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		debug, _ := cmd.Flags().GetBool("debug")
 		if debug {
-			fmt.Println("Version:", dq.Version)
+			ezlog.L.Println("Version: " + dq.Version)
 		}
 	},
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -50,7 +51,7 @@ var rootCmd = &cobra.Command{
 		err = devtools.Err
 		// Print out devtools
 		if err == nil {
-			dq.DebugStruct(true, "devtools", devtools)
+			ezlog.L.Println(str.Struct2String("devtools", devtools))
 		}
 		return err
 	},
